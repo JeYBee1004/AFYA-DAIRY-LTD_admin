@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AFYA DAIRY</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+    <header class="header">
+        <div class="header-left">
+            <button class="sidebar-toggle" onclick="toggleSidebar()">
+                <i class="fas fa-bars"></i>
+            </button>
+            <div class="logo">
+                <i class="fas fa-cow"></i>
+                <span>AFYA DAIRY LTD</span>
+            </div>
+        </div>
+        <div class="header-right">
+            <div class="user-profile" onclick="toggleUserMenu()">
+                <div class="user-avatar" id="user-avatar">CEO</div>
+                <div class="user-info">
+                    <span class="user-name" id="user-name-display">CEO/Admin</span>
+                    <span class="user-role" id="user-role-display">Administrator</span>
+                    <div class="user-menu" id="userMenu">
+                        <div class="menu-item" onclick="showProfile()">
+                            <i class="fas fa-user"></i> Profile
+                        </div>
+                        <div class="menu-item logout-item" onclick="logout()">
+                            <i class="fas fa-sign-out-alt"></i> Logout
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <aside class="sidebar" id="sidebar">
+        <nav class="sidebar-nav">
+            <div class="nav-section">
+                <h3>Overview</h3>
+                <a href="#" class="nav-item active" data-page="dashboard">
+                    <i class="fas fa-tachometer-alt"></i>
+                    <span>Dashboard</span>
+                </a>
+            </div>
+            <div class="nav-section">
+                <h3>Farm Management</h3>
+                <a href="#" class="nav-item" data-page="livestock">
+                    <i class="fas fa-cow"></i>
+                    <span>Livestock</span>
+                </a>
+                <a href="#" class="nav-item" data-page="production">
+                    <i class="fas fa-tint"></i>
+                    <span>Production</span>
+                </a>
+                <a href="#" class="nav-item" data-page="feeding">
+                    <i class="fas fa-seedling"></i>
+                    <span>Feeding</span>
+                </a>
+                <a href="#" class="nav-item" data-page="health">
+                    <i class="fas fa-heartbeat"></i>
+                    <span>Health Records</span>
+                </a>
+            </div>
+            <div class="nav-section">
+                <h3>Business</h3>
+                <a href="#" class="nav-item" data-page="staff">
+                    <i class="fas fa-users"></i>
+                    <span>Staff Management</span>
+                </a>
+            </div>
+            <div class="nav-section">
+                <h3>System</h3>
+                <a href="#" class="nav-item" data-page="settings">
+                    <i class="fas fa-cog"></i>
+                    <span>Settings</span>
+                </a>
+            </div>
+        </nav>
+    </aside>
+
+    <main class="main-content">
+        <div id="dashboard-page" class="page active">
+            <div class="page-header">
+                <div>
+                    <h1>CEO Dashboard</h1>
+                    <p>Complete overview of AFYA DAIRY operations</p>
+                </div>
+            </div>
+
+            <div class="kpi-grid">
+                <div class="kpi-card production">
+                    <div class="kpi-icon">
+                        <i class="fas fa-tint"></i>
+                    </div>
+                    <div class="kpi-content">
+                        <div class="kpi-value" id="daily-production">0L</div>
+                        <div class="kpi-label">Daily Production</div>
+                        <div class="kpi-change positive">+8.2%</div>
+                    </div>
+                </div>
+                <div class="kpi-card livestock">
+                    <div class="kpi-icon">
+                        <i class="fas fa-cow"></i>
+                    </div>
+                    <div class="kpi-content">
+                        <div class="kpi-value" id="total-livestock">0</div>
+                        <div class="kpi-label">Total Livestock</div>
+                        <div class="kpi-change neutral">0%</div>
+                    </div>
+                </div>
+                <div class="kpi-card efficiency">
+                    <div class="kpi-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <div class="kpi-content">
+                        <div class="kpi-value" id="efficiency-rate">94.2%</div>
+                        <div class="kpi-label">Farm Efficiency</div>
+                        <div class="kpi-change positive">+3.1%</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="charts-grid">
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h3>Production Trends</h3>
+                        <div class="chart-controls">
+                            <button class="chart-btn active" data-period="7d">7D</button>
+                            <button class="chart-btn" data-period="30d">30D</button>
+                            <button class="chart-btn" data-period="90d">90D</button>
+                        </div>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="production-chart"></canvas>
+                    </div>
+                </div>
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h3>Revenue Analysis</h3>
+                        <select class="chart-select">
+                            <option>This Month</option>
+                            <option>Last Month</option>
+                            <option>This Year</option>
+                        </select>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="revenue-chart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <div class="quick-stats">
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <h3>Health Status</h3>
+                        <i class="fas fa-heartbeat"></i>
+                    </div>
+                    <div class="stat-content">
+                        <div class="stat-item">
+                            <span class="stat-label">Healthy</span>
+                            <span class="stat-value healthy" id="healthy-cows">0</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Treatment</span>
+                            <span class="stat-value warning" id="treatment-cows">0</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Quarantine</span>
+                            <span class="stat-value danger" id="quarantine-cows">0</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <h3>Staff Performance</h3>
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="stat-content">
+                        <div class="stat-item">
+                            <span class="stat-label">Total Staff</span>
+                            <span class="stat-value" id="total-staff">0</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <h3>Feed Inventory</h3>
+                        <i class="fas fa-seedling"></i>
+                    </div>
+                    <div class="stat-content">
+                        <div class="stat-item">
+                            <span class="stat-label">Hay</span>
+                            <span class="stat-value" id="hay-stock">0 kg</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Concentrate</span>
+                            <span class="stat-value" id="concentrate-stock">0 kg</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Silage</span>
+                            <span class="stat-value" id="silage-stock">0 kg</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="activities-section">
+                <div class="section-header">
+                    <h3>Recent Activities</h3>
+                    <button class="btn-text" onclick="showPage('alerts')">View All</button>
+                </div>
+                <div class="activities-list" id="activities-list">
+                    </div>
+            </div>
+        </div>
+
+        <div id="livestock-page" class="page">
+            <div class="page-header">
+                <div>
+                    <h1>Livestock Management</h1>
+                    <p>Comprehensive cattle inventory and health tracking</p>
+                </div>
+                <button class="btn-primary" onclick="openLivestockModal()">
+                    <i class="fas fa-plus"></i>
+                    Add Livestock
+                </button>
+            </div>
+            <div class="livestock-table-container">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Cow ID</th>
+                            <th>Cow Name</th>
+                            <th>Breed</th>
+                            <th>Status</th>
+                            <th>Birth Date</th>
+                            <th>Weight (kg)</th>
+                            <th>Additional notes</th>
+                        </tr>
+                    </thead>
+                    <tbody id="livestock-tbody">
+                        </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div id="production-page" class="page">
+            <div class="page-header">
+                <div>
+                    <h1>Milk Production</h1>
+                    <p>Track daily milk production records</p>
+                </div>
+                <button class="btn-primary" onclick="openProductionModal()">
+                    <i class="fas fa-plus"></i>
+                    Record Production
+                </button>
+            </div>
+            <div class="production-table-container">
+                <div class="tab-navigation">
+                    <button class="tab-btn active" onclick="switchTab('morning', 'production')">
+                        <i class="fas fa-sun"></i>
+                        Morning
+                    </button>
+                    <button class="tab-btn" onclick="switchTab('afternoon', 'production')">
+                        <i class="fas fa-sun"></i>
+                        Afternoon
+                    </button>
+                    <button class="tab-btn" onclick="switchTab('evening', 'production')">
+                        <i class="fas fa-moon"></i>
+                        Evening
+                    </button>
+                </div>
+                <div class="table-wrapper">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Record ID</th>
+                                <th>Cow ID</th>
+                                <th>Date</th>
+                                <th>Time Period</th>
+                                <th>Quantity (L)</th>
+                                <th>Note</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="production-tbody">
+                            </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div id="feeding-page" class="page">
+            <div class="page-header">
+                <div>
+                    <h1>Feeding Records</h1>
+                    <p>Track daily feeding records</p>
+                </div>
+                <button class="btn-primary" onclick="openFeedingModal()">
+                    <i class="fas fa-plus"></i>
+                    Record Feeding
+                </button>
+            </div>
+            <div class="feeding-table-container">
+                <div class="tab-navigation">
+                    <button class="tab-btn active" onclick="switchTab('morning', 'feeding')">
+                        <i class="fas fa-sun"></i>
+                        Morning
+                    </button>
+                    <button class="tab-btn" onclick="switchTab('afternoon', 'feeding')">
+                        <i class="fas fa-sun"></i>
+                        Afternoon
+                    </button>
+                    <button class="tab-btn" onclick="switchTab('evening', 'feeding')">
+                        <i class="fas fa-moon"></i>
+                        Evening
+                    </button>
+                </div>
+                <div class="table-wrapper">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Record ID</th>
+                                <th>Cow ID</th>
+                                <th>Date</th>
+                                <th>Feed Time</th>
+                                <th>Feed Type</th>
+                                <th>Feed Name</th>
+                                <th>Quantity (kg)</th>
+                                <th>Note</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="feeding-tbody">
+                            </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div id="health-page" class="page">
+            <div class="page-header">
+                <div>
+                    <h1>Health Records</h1>
+                    <p>Track livestock health and veterinary records</p>
+                </div>
+                <button class="btn-primary" onclick="openHealthModal()">
+                    <i class="fas fa-plus"></i>
+                    Add Health Record
+                </button>
+            </div>
+            <div class="health-table-container">
+                <div class="table-wrapper">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Record ID</th>
+                                <th>Cow ID</th>
+                                <th>Date</th>
+                                <th>Health Status</th>
+                                <th>Symptoms</th>
+                                <th>Treatment</th>
+                                <th>Veterinarian</th>
+                                <th>Notes</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="health-tbody">
+                            </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div id="staff-page" class="page">
+            <div class="page-header">
+                <div>
+                    <h1>Staff Management</h1>
+                    <p>Manage your farm workforce</p>
+                </div>
+                <button class="btn-primary" onclick="openStaffModal()">
+                    <i class="fas fa-user-plus"></i>
+                    Add Staff
+                </button>
+            </div>
+            <div class="staff-grid" id="staff-grid">
+                </div>
+        </div>
+        
+        <div id="settings-page" class="page">
+            <div class="page-header">
+                <div>
+                    <h1>Settings</h1>
+                    <p>Configure system preferences</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-header">
+                    <h3>System Configuration</h3>
+                    <i class="fas fa-cog"></i>
+                </div>
+                <div class="stat-content">
+                    <p>Settings panel coming soon...</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="profile-page" class="page">
+            <div class="page-header">
+                <div>
+                    <h1>User Profile</h1>
+                    <p>Manage your account information</p>
+                </div>
+            </div>
+            <div class="profile-card">
+                <div class="profile-avatar">
+                    <i class="fas fa-user-circle"></i>
+                </div>
+                <div class="profile-info">
+                    <h2 id="profile-name"></h2>
+                    <p id="profile-email"></p>
+                    <p id="profile-role"></p>
+                    <button class="btn-primary" onclick="editProfile()">Edit Profile</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modal-title"></h3>
+                <button class="modal-close" onclick="closeModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body" id="modal-body"></div>
+        </div>
+    </div>
+
+    <div id="toast-container" class="toast-container"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="admin.js"></script>
+</body>
+</html>
