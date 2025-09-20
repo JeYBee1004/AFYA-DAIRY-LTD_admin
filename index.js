@@ -250,7 +250,7 @@ supabaseClient.auth.onAuthStateChange((event, session) => {
         if (isSigningIn) {
             isSigningIn = false; // reset flag
             setTimeout(() => {
-                window.location.href = 'index.html';
+                window.location.href = 'admin.html';
             }, 500);
         }
     } else if (event === 'SIGNED_OUT') {
@@ -258,4 +258,5 @@ supabaseClient.auth.onAuthStateChange((event, session) => {
         isSigningIn = false;
     }
 });
+
 
