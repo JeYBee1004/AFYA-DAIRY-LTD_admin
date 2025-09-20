@@ -324,7 +324,7 @@ async function fetchUserProfile() {
             if (profileRole) profileRole.textContent = profile.role;
         } else {
             console.log("No user logged in. Redirecting...");
-            window.location.href = 'login.html';
+            window.location.href = 'index.html';
         }
     } catch (err) {
         console.error('Authentication check failed:', err);
@@ -346,7 +346,7 @@ async function logout() {
             } catch (e) { /* ignore */ }
         });
         subscriptionChannels = [];
-        window.location.href = 'login.html'; // Redirect to login page
+        window.location.href = 'index.html'; // Redirect to login page
     }
 }
 
@@ -1241,5 +1241,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     console.log("Admin dashboard loaded successfully.");
 });
+
 
 
