@@ -6,23 +6,13 @@ const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS
 let supabaseClient;
 let subscriptionChannels = []; 
 
-/**
- * antiInspect.js
- * Combines:
- *  - disable context menu (right click)
- *  - disable common devtools/view-source shortcuts (F12, Ctrl+Shift+I/J/C, Ctrl+U)
- *  - detect devtools by viewport changes and act (warn/block)
- *
- * NOTE: This only deters casual users. Does NOT prevent inspection by determined users.
- */
-
 (function antiInspect(window, document) {
   'use strict';
 
   // CONFIG: choose 'warn' or 'block' or 'log' when DevTools detected
-  const ON_DETECT_ACTION = 'block'; // 'block' | 'warn' | 'log'
-  const CHECK_INTERVAL_MS = 500; // how often to check for devtools open
-  const SIZE_THRESHOLD = 160; // px difference threshold likely when devtools is open
+  const ON_DETECT_ACTION = 'block'; 
+  const CHECK_INTERVAL_MS = 500; 
+  const SIZE_THRESHOLD = 160;
 
   // small helper to replace page content
   function blockPage(message) {
@@ -1251,4 +1241,5 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     console.log("Admin dashboard loaded successfully.");
 });
+
 
