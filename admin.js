@@ -305,7 +305,7 @@ async function fetchUserProfile() {
         if (userError) {
             console.error('Error fetching user:', userError);
             showToast('Authentication error.', 'error');
-            window.location.href = 'login.html'; // Redirect to login page
+            window.location.href = 'index.html'; // Redirect to login page
             return;
         }
 
@@ -1251,3 +1251,4 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     console.log("Admin dashboard loaded successfully.");
 });
+
